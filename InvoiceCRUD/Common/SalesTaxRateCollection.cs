@@ -8,8 +8,12 @@ using System.ComponentModel;
 
 namespace Common
 {
-    public class SalesTaxRateCollection : BindingList<SalesTaxRate>
+    /// <summary>
+    /// Collection class for object salesTaxRate
+    /// </summary>
+    public class SalesTaxRateCollection : List<SalesTaxRate>
     {
+        //linq statement to read taxRate by code
         public IEnumerable<SalesTaxRate> GetTaxRatesByCode(string code)
                                 => this.Where(x => x.TaxCode.ToUpper() == code.ToUpper());
     }

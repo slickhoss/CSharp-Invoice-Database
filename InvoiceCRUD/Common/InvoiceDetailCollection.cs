@@ -7,9 +7,13 @@ using System.ComponentModel;
 
 namespace Common
 {
+    /// <summary>
+    /// Collection class for invoiceDetail - implements BindingList
+    /// </summary>
     public class InvoiceDetailCollection : BindingList<InvoiceDetail>
     {
         //lambda expressions
+        decimal count => this.Count;
         decimal subTotal => this.Sum(x => x.SubTotal);
         decimal average => this.Average(x => x.Price);
         decimal maximum => this.Max(x => x.Price);

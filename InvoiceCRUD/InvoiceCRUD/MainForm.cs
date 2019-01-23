@@ -25,7 +25,6 @@ namespace InvoiceCRUD
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
             infoLabel.Text = string.Format($"Sub Total :\nGST :\nPST :\nGrand Total :\n\n\n\nAverage :\nMaximum :\nMinimum :");
             legendLabel.Text = null;
             invoiceDetailVM = new InvoiceDetailViewModel();
@@ -33,48 +32,47 @@ namespace InvoiceCRUD
             errorProvider = new ErrorProvider();
             set_Bindings();
         }
-
+        
+        //function to refresh gridView
         private void loadDataGridView()
         {
             invoiceDetailVM.InvoiceDetails = InvoiceCRUDRepository.GetInvoiceDetails();
-            invoiceDetailListBox.DataSource = invoiceDetailVM.InvoiceDetails;
-            invoiceDetailListBox.DisplayMember = "Sku";
+            if (invoiceDetailVM.InvoiceDetails.Count > 0)
+            {
+                invoiceDetailListBox.DataSource = invoiceDetailVM.InvoiceDetails;
+                invoiceDetailListBox.DisplayMember = "Sku";
+                legendLabel.TextAlign = ContentAlignment.MiddleRight;
+                legendLabel.Text = string.Format($"{invoiceDetailVM.InvoiceDetails.SubTotal:C2}\n{invoiceDetailVM.InvoiceDetails.Gst:C2}\n{invoiceDetailVM.InvoiceDetails.Pst:C2}\n{invoiceDetailVM.InvoiceDetails.GrandTotal:C2}\n\n\n\n{invoiceDetailVM.InvoiceDetails.Average:C2}\n{invoiceDetailVM.InvoiceDetails.Maximum:C2}\n{invoiceDetailVM.InvoiceDetails.Minimum:C2}");
+            }
         }
 
-
-
+        //function to set appropriate data bindings
         private void set_Bindings()
         {
             invoiceIdTextBox.DataBindings.Add("Text", invoiceDetailVM, "DetailId");
             quantityTextBox.DataBindings.Add("Text", invoiceDetailVM, "Quantity");
             skuTextBox.DataBindings.Add("Text", invoiceDetailVM, "Sku", false, DataSourceUpdateMode.OnValidation, "");
             descriptionTextBox.DataBindings.Add("Text", invoiceDetailVM, "Description");
-            priceTextBox.DataBindings.Add("Text", invoiceDetailVM, "Price", true, DataSourceUpdateMode.OnValidation, "0.00", "#,##0.00;(#,##0.00);0.00");
+            priceTextBox.DataBindings.Add("Text", invoiceDetailVM, "Price", true, DataSourceUpdateMode.OnValidation, "0.00", "#,##0.00");
             taxableCheckBox.DataBindings.Add("Checked", invoiceDetailVM, "Taxable");
             extendedTextBox.DataBindings.Add("Text", invoiceDetailVM, "SubTotal");
-
-            invoiceDetailListBox.DataSource = invoiceDetailVM.InvoiceDetails;
-            invoiceDetailListBox.DisplayMember = "Sku";
+            loadDataGridView();
         }
-
-
-
+        
         private void saveButton_Click(object sender, EventArgs e)
         {
             try
             {
-
-                InvoiceDetail invoiceDetail = new InvoiceDetail { DetailId = Int16.Parse(invoiceIdTextBox.Text), Quantity = Int16.Parse(quantityTextBox.Text), Sku = skuTextBox.Text, Description = descriptionTextBox.Text, Price = Decimal.Parse(priceTextBox.Text), Taxable = taxableCheckBox.Checked };
+                InvoiceDetail invoiceDetail = new InvoiceDetail {Quantity = Int16.Parse(quantityTextBox.Text), Sku = skuTextBox.Text, Description = descriptionTextBox.Text, Price = Decimal.Parse(priceTextBox.Text), Taxable = taxableCheckBox.Checked };
                 int result = 0;
-                if (Int16.Parse(invoiceIdTextBox.Text) == 0)
+                if (String.IsNullOrWhiteSpace(invoiceIdTextBox.Text)) 
                 {
                     // int index = invoiceDetailListBox.SelectedIndex;
                     // InvoiceDetail invoiceDetail = invoiceDetailVM.InvoiceDetails[index];
                     result = Validator.CreateInvoiceDetail(invoiceDetail);
                     if (result > 0)
                     {
-                        invoiceDetailVM.InvoiceDetails = InvoiceCRUDRepository.GetInvoiceDetails();
-                        invoiceDetailListBox.DataSource = invoiceDetailVM.InvoiceDetails;
+                        loadDataGridView();
                     }
                     if (result < 0)
                     {
@@ -85,11 +83,11 @@ namespace InvoiceCRUD
                 }
                 else
                 {
+                    invoiceDetail.DetailId = Int16.Parse(invoiceIdTextBox.Text);
                     result = Validator.UpdateInvoiceDetail(invoiceDetail);
                     if (result > 0)
                     {
-                        invoiceDetailVM.InvoiceDetails = InvoiceCRUDRepository.GetInvoiceDetails();
-                        invoiceDetailListBox.DataSource = invoiceDetailVM.InvoiceDetails;
+                        loadDataGridView();
                     }
                     if (result < 0)
                     {
@@ -98,9 +96,6 @@ namespace InvoiceCRUD
                         errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
                     }
                 }
-
-
-
             }
             catch (SqlException ex)
             {
@@ -126,14 +121,17 @@ namespace InvoiceCRUD
         {
             try
             {
-                int index = invoiceDetailListBox.SelectedIndex;
-                int result = 0;
-                InvoiceDetail invoiceDetail = new InvoiceDetail { DetailId = Int16.Parse(invoiceIdTextBox.Text) };
-                result = InvoiceCRUDRepository.DeleteInvoice(invoiceDetail);
-                if (result > 0)
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (dialogResult == DialogResult.OK)
                 {
-                    invoiceDetailVM.InvoiceDetails = InvoiceCRUDRepository.GetInvoiceDetails();
-                    invoiceDetailListBox.DataSource = invoiceDetailVM.InvoiceDetails;
+                    int index = invoiceDetailListBox.SelectedIndex;
+                    int result = 0;
+                    InvoiceDetail invoiceDetail = new InvoiceDetail { DetailId = Int16.Parse(invoiceIdTextBox.Text) };
+                    result = InvoiceCRUDRepository.DeleteInvoice(invoiceDetail);
+                    if (result > 0)
+                    {
+                        loadDataGridView();
+                    }
                 }
             }
             catch (SqlException ex)

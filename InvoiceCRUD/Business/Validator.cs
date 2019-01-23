@@ -9,8 +9,12 @@ using Repository;
 
 namespace Business
 {
+    /// <summary>
+    /// Validator class
+    /// </summary>
     public static class Validator
     {
+        //regex for sku pattern
         static string skuRegex = @"^[A-Z]{3}[0-9]{4}";
 
         private static List<String> errorMessages;

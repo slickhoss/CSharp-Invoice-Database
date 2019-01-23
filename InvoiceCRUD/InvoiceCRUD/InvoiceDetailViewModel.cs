@@ -10,6 +10,9 @@ using Common;
 
 namespace InvoiceCRUD
 {
+    /// <summary>
+    /// View Model Class for object InvoiceDetail - implements INotifyPropertyChanged
+    /// </summary>
     class InvoiceDetailViewModel : INotifyPropertyChanged
     {
         //INotifyPropertyChaned implementation
@@ -20,7 +23,7 @@ namespace InvoiceCRUD
         }
 
         InvoiceDetailCollection invoiceDetails;
-        string detailId;
+        string detailId; //stores detailId as a string for nullables
         int quantity;
         string sku;
         string description;

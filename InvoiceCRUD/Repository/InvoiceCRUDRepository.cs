@@ -8,6 +8,9 @@ using System.Data.SqlClient;
 using Common;
 namespace Repository
 {
+    /// <summary>
+    /// Repository class
+    /// </summary>
     public class InvoiceCRUDRepository
     {
         //establish server connection
@@ -19,6 +22,10 @@ namespace Repository
             "                                   TrustServerCertificate = true;" +
             "                                   Connection Timeout = 30;";
 
+        /// <summary>
+        /// Read function for table invoiceDetail
+        /// </summary>
+        /// <returns></returns>
         public static InvoiceDetailCollection GetInvoiceDetails()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -65,6 +72,9 @@ namespace Repository
             }
         }
 
+        /// <summary>
+        /// Create function for table invoiceDetail 
+        /// </summary>
         public static int CreateInvoice(InvoiceDetail invoice)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -88,6 +98,9 @@ namespace Repository
             }
         }
 
+        /// <summary>
+        /// Update function for table invoiceDetail 
+        /// </summary>
         public static int UpdateInvoiceDetail(InvoiceDetail invoice)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -117,6 +130,9 @@ namespace Repository
             }
         }
 
+        /// <summary>
+        /// Delete function for table invoiceDetail 
+        /// </summary>
         public static int DeleteInvoice(InvoiceDetail invoice)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -134,6 +150,9 @@ namespace Repository
             }
         }
 
+        /// <summary>
+        /// Read function for table salesTax
+        /// </summary>
         public static SalesTaxRateCollection GetTaxRates()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

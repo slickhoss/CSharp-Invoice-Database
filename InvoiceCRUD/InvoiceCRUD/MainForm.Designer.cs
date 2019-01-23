@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.invoiceDetailListBox = new System.Windows.Forms.ListBox();
             this.skuListLabel = new System.Windows.Forms.Label();
             this.quantityLabel = new System.Windows.Forms.Label();
@@ -156,6 +157,7 @@
             // 
             // extendedTextBox
             // 
+            this.extendedTextBox.Enabled = false;
             this.extendedTextBox.Location = new System.Drawing.Point(362, 246);
             this.extendedTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.extendedTextBox.Name = "extendedTextBox";
@@ -180,7 +182,7 @@
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(112, 35);
             this.saveButton.TabIndex = 13;
-            this.saveButton.Text = "Save";
+            this.saveButton.Text = "&Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
@@ -198,7 +200,7 @@
             // 
             this.legendLabel.AutoSize = true;
             this.legendLabel.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.legendLabel.Location = new System.Drawing.Point(961, 37);
+            this.legendLabel.Location = new System.Drawing.Point(961, 38);
             this.legendLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.legendLabel.Name = "legendLabel";
             this.legendLabel.Size = new System.Drawing.Size(18, 200);
@@ -269,9 +271,10 @@
             this.Controls.Add(this.quantityLabel);
             this.Controls.Add(this.skuListLabel);
             this.Controls.Add(this.invoiceDetailListBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
-            this.Text = "COMP2614 Final Exam";
+            this.Text = "C# -  SQL CRUD DEMO";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

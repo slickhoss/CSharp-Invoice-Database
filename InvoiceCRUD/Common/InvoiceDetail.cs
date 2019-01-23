@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common
 {
+    /// <summary>
+    /// Data class for object invoiceDetail
+    /// </summary>
     public class InvoiceDetail
     {
         int detailId;

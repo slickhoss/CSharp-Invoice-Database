@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common
 {
+    /// <summary>
+    /// Data class for object salesTaxRate
+    /// </summary>
     public class SalesTaxRate
     {
         int taxId;
